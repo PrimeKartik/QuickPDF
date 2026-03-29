@@ -48,7 +48,7 @@ const WordToPdf = () => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('http://localhost:3001/api/convert', formData, {
+            const response = await axios.post('https://quickpdf-0zwz.onrender.com/api/convert', formData, {
                 responseType: 'blob',
             });
             

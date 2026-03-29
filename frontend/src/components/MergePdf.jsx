@@ -42,7 +42,7 @@ const MergePdf = () => {
         files.forEach(file => formData.append('files', file));
 
         try {
-            const response = await axios.post('http://localhost:3001/api/merge', formData, {
+            const response = await axios.post('https://quickpdf-0zwz.onrender.com/api/merge', formData, {
                 responseType: 'blob',
             });
             

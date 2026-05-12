@@ -77,4 +77,3 @@ To accommodate this, the codebase contains a specialized `Dockerfile`.
 ---
 
 **Protocol Access: AUTHORIZED.** 
-*Maintained under STARK INDUSTRIES compliance standards.*

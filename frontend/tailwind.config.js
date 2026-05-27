@@ -8,60 +8,52 @@ export default {
   theme: {
     extend: {
       colors: {
-        "on-surface-variant": "#bbc9cf",
-        "outline-variant": "#3c494e",
-        "inverse-primary": "#006875",
-        "on-tertiary-container": "#414f63",
-        "surface-container-lowest": "#0a0e14",
-        "on-secondary-fixed": "#410001",
-        "on-primary-container": "#005762",
-        "inverse-on-surface": "#2d3137",
-        "surface-container-high": "#262a31",
-        "surface": "#10141a",
-        "error-container": "#93000a",
-        "surface-variant": "#31353c",
-        "on-background": "#dfe2eb",
-        "tertiary": "#cfddf6",
-        "on-primary": "#00363d",
-        "on-primary-fixed": "#001f24",
-        "on-tertiary": "#233144",
-        "secondary": "#ffb4aa",
-        "secondary-fixed-dim": "#ffb4aa",
-        "primary-fixed": "#9cf0ff",
-        "on-tertiary-fixed": "#0e1c2e",
-        "tertiary-fixed-dim": "#b9c7e0",
-        "secondary-container": "#c5020b",
-        "surface-container-highest": "#31353c",
-        "surface-container-low": "#181c22",
-        "error": "#ffb4ab",
-        "on-primary-fixed-variant": "#004f58",
-        "outline": "#859399",
-        "tertiary-container": "#b3c1d9",
-        "background": "#10141a",
-        "on-surface": "#dfe2eb",
-        "on-error": "#690005",
-        "tertiary-fixed": "#d5e3fc",
-        "surface-bright": "#353940",
-        "primary-fixed-dim": "#00daf3",
-        "on-secondary": "#690003",
-        "on-error-container": "#ffdad6",
-        "primary": "#7eecff",
-        "inverse-surface": "#dfe2eb",
-        "surface-container": "#1c2026",
-        "secondary-fixed": "#ffdad5",
-        "on-tertiary-fixed-variant": "#3a485b",
-        "surface-dim": "#10141a",
-        "primary-container": "#00d3ec",
-        "surface-tint": "#00daf3",
-        "on-secondary-fixed-variant": "#930005",
-        "on-secondary-container": "#ffd2cc"
+        surface: {
+          base: "#000000",
+          raised: "#0061ff"
+        },
+        text: {
+          secondary: "#444444",
+          tertiary: "#232323",
+          inverse: "#ffffff"
+        }
       },
       fontFamily: {
-        "headline": ["Space Grotesk", "sans-serif"],
-        "body": ["Inter", "sans-serif"],
-        "label": ["Inter", "sans-serif"]
+        body: ["DM Sans", "-apple-system", "blinkmacsystemfont", "Segoe UI", "roboto", "Helvetica Neue", "arial", "Noto Sans", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
       },
-      borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+      fontSize: {
+        'xs': '12px',
+        'sm': '14px',
+        'base': ['14px', '21px'],
+        'md': '16px',
+        'lg': '18px',
+        'xl': '20px',
+        '2xl': '22px',
+        '3xl': '24px',
+        '4xl': '32px'
+      },
+      spacing: {
+        '1': '2.56px',
+        '2': '4px',
+        '3': '8px',
+        '4': '11.5px',
+        '5': '12px',
+        '6': '16px',
+        '7': '18px',
+        '8': '23px'
+      },
+      borderRadius: {
+        'xs': '4px',
+        'sm': '8px',
+        'md': '10.8px',
+        'lg': '16px'
+      },
+      transitionDuration: {
+        'instant': '150ms',
+        'fast': '200ms',
+        'normal': '300ms',
+        'slow': '400ms'
+      }
     },
   },
   plugins: [],

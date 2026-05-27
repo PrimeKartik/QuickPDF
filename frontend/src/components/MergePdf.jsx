@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import { Layers, FilePlus, Loader2, Download, RefreshCw, XCircle, CheckCircle, GripVertical, Trash2 } from 'lucide-react';
+import { Layers, FilePlus, Loader2, Download, RefreshCw, XCircle, CheckCircle, GripVertical, Trash2, FileText, UploadCloud } from 'lucide-react';
 
 const MergePdf = () => {
     const [files, setFiles] = useState([]);
@@ -16,7 +16,7 @@ const MergePdf = () => {
             setError('');
             setResultUrl(null);
         } else {
-            setError('INVALID TYPE: Only .pdf files are accepted for merging.');
+            setError('Invalid file format. Only .pdf files are accepted for merging.');
         }
     }, []);
 
@@ -31,7 +31,7 @@ const MergePdf = () => {
 
     const handleMerge = async () => {
         if (files.length < 2) {
-            setError('Protocol requires at least two PDF units to merge.');
+            setError('Please upload at least two PDF files to merge.');
             return;
         }
 
@@ -49,7 +49,7 @@ const MergePdf = () => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             setResultUrl(url);
         } catch (err) {
-            setError('FUSION FAILED: Core breach detected during merge synthesis.');
+            setError('Merge Failed. Try again.');
             console.error(err);
         } finally {
             setLoading(false);
@@ -60,7 +60,7 @@ const MergePdf = () => {
         if (!resultUrl) return;
         const link = document.createElement('a');
         link.href = resultUrl;
-        link.setAttribute('download', 'Merged_Protocol.pdf');
+        link.setAttribute('download', 'Merged_Document.pdf');
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
@@ -73,117 +73,134 @@ const MergePdf = () => {
     };
 
     return (
-        <div className="w-full max-w-5xl relative z-10 flex flex-col items-center">
-            {/* HUD Title */}
-            <div className="text-center mb-12 relative z-10">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                    <span className="h-[1px] w-8 bg-primary/40"></span>
-                    <span className="text-primary font-headline text-[10px] tracking-[0.3em] uppercase">Fusion Protocol Beta</span>
-                    <span className="h-[1px] w-8 bg-primary/40"></span>
-                </div>
-                <h1 className="text-5xl font-headline font-bold text-on-surface tracking-tight mb-4 uppercase">Merge PDFs</h1>
-                <p className="text-on-surface-variant text-sm max-w-md mx-auto leading-relaxed">
-                    Combine multiple intel assets into a single secure protocol. Drop files to initiate alignment.
-                </p>
-            </div>
-
+        <div className="w-full flex flex-col items-center">
             {error && (
-                <div className="w-full max-w-4xl mb-6 bg-error-container/20 border border-error/50 p-4 rounded-sm flex items-center justify-between kinetic-glow">
-                    <div className="flex gap-4 items-center">
-                        <XCircle className="text-error" size={24} />
-                        <span className="text-error text-xs font-bold uppercase tracking-widest">{error}</span>
-                    </div>
+                <div className="w-full mb-6 bg-[#fff0f0] border-l-4 border-[#ff4d4f] p-4 rounded-sm flex items-center gap-3">
+                    <XCircle color="#ff4d4f" size={24} />
+                    <span className="text-sm font-medium text-text-secondary">{error}</span>
                 </div>
             )}
 
-            <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 min-h-[500px]">
-                {/* Upload & List Area */}
-                <div className="lg:col-span-8 flex flex-col gap-6">
-                    <div {...getRootProps()} className={`group relative surface-container border-2 border-dashed ${isDragActive ? 'border-primary' : 'border-outline-variant/30'} hover:border-primary/50 p-6 rounded-lg transition-all duration-300 flex flex-col items-center justify-center text-center kinetic-glow bg-surface-container/40 backdrop-blur-sm cursor-pointer`}>
-                        <input {...getInputProps()} />
-                        <div className="flex items-center gap-4">
-                            <FilePlus className="text-primary opacity-60 w-8 h-8" />
-                            <p className="font-headline text-on-surface tracking-widest uppercase">
-                                + ADD PAYLOAD MODULES
+            <div className="w-full max-w-5xl gradient-border-wrapper p-3">
+                <div 
+                    {...(files.length === 0 ? getRootProps() : {})} 
+                    className={`w-full bg-white rounded-xl border-2 border-dashed flex flex-col items-center min-h-[450px] transition-all duration-fast ${files.length > 0 ? 'border-[#e5e7eb] p-10 cursor-default' : isDragActive ? 'border-surface-raised bg-[#f0f6ff] justify-center' : 'border-[#d1d5db] hover:border-[#a1a1aa] cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface-raised focus-visible:ring-offset-2'}`}
+                    tabIndex={files.length > 0 ? -1 : 0}
+                    role={files.length > 0 ? "region" : "button"}
+                    aria-label="Upload PDF Documents"
+                >
+                    {files.length === 0 && <input {...getInputProps()} />}
+
+                    {files.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center pointer-events-none">
+                            {/* Stacked PDF Icon */}
+                            <div className="relative w-24 h-24 mb-6">
+                                <div className="absolute top-0 left-0 w-16 h-16 bg-[#ff8b8b] rounded-xl shadow-sm rotate-[-10deg]"></div>
+                                <div className="absolute bottom-0 right-0 w-16 h-16 bg-[#f54c4c] rounded-xl shadow-md flex items-center justify-center">
+                                    <span className="text-white font-bold text-2xl font-headline">PDF</span>
+                                </div>
+                            </div>
+
+                            <button className="px-8 py-3 bg-surface-raised text-text-inverse text-lg font-bold rounded-lg shadow-[0_4px_14px_0_rgba(0,97,255,0.39)] hover:brightness-110 hover:shadow-[0_6px_20px_rgba(0,97,255,0.23)] hover:scale-[1.02] transition-all duration-fast flex items-center justify-center gap-2 min-h-[44px] pointer-events-auto active:scale-95">
+                                <UploadCloud size={22} strokeWidth={2.5} />
+                                Upload PDF Files to Merge
+                            </button>
+
+                            <p className="text-sm text-text-secondary mt-6 font-medium">
+                                Or drop PDF files here to combine them
                             </p>
                         </div>
-                    </div>
-
-                    {files.length > 0 && (
-                        <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                            {files.map((file, idx) => (
-                                <div key={idx} className="bg-surface-container-low p-4 rounded-sm border border-outline-variant/20 flex items-center justify-between hover:border-primary/30 transition-colors group">
-                                    <div className="flex items-center gap-4">
-                                        <GripVertical className="text-on-surface-variant/30 cursor-grab" size={20} />
-                                        <span className="text-primary font-mono text-[10px] bg-primary/10 px-2 py-1 rounded">0{idx + 1}</span>
-                                        <div>
-                                            <p className="font-headline text-sm font-bold text-on-surface">{file.name}</p>
-                                            <p className="text-[10px] text-on-surface-variant mt-1 uppercase tracking-widest">
-                                                Size: {(file.size / 1024 / 1024).toFixed(2)} MB
-                                            </p>
-                                        </div>
+                    ) : (
+                        <div className="w-full max-w-3xl flex flex-col items-center">
+                            
+                            <div className="w-full flex justify-between items-center mb-6">
+                                <h3 className="text-xl font-bold text-text-tertiary">Files to Merge</h3>
+                                {!resultUrl && (
+                                    <div {...getRootProps()} className="cursor-pointer">
+                                        <input {...getInputProps()} />
+                                        <button className="text-sm font-medium text-surface-raised hover:text-[#0047cc] flex items-center gap-2 p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface-raised focus-visible:ring-offset-2 rounded">
+                                            <FilePlus size={18} /> Add more files
+                                        </button>
                                     </div>
-                                    <button onClick={(e) => { e.stopPropagation(); removeFile(idx); }} className="text-error/50 hover:text-error opacity-0 group-hover:opacity-100 transition-all">
-                                        <Trash2 size={18} />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    {resultUrl && (
-                        <div className="mt-4 p-4 border border-outline-variant/30 bg-surface-container rounded-sm flex items-center justify-center gap-3 animate-in slide-in-from-top-4 duration-500">
-                            <CheckCircle className="text-primary" size={20} />
-                            <span className="text-xs uppercase tracking-widest text-primary font-bold">Fusion Sequence Completed. Payload Ready.</span>
-                        </div>
-                    )}
-                </div>
-
-                {/* Controls Area */}
-                <div className="lg:col-span-4 flex flex-col gap-6">
-                    <div className="surface-container p-6 rounded-lg border border-outline-variant/10 flex flex-col gap-6 h-full bg-surface-container/60 backdrop-blur-sm">
-                        <div className="space-y-4">
-                            <div className="p-4 bg-surface-container-lowest rounded border-l-4 border-primary">
-                                <h5 className="text-[10px] font-headline text-primary uppercase tracking-widest mb-1">Status Report</h5>
-                                <p className="text-xs text-on-surface-variant leading-relaxed italic">
-                                    {resultUrl 
-                                        ? `"Assets encrypted and unified successfully."`
-                                        : files.length > 1 ? `"${files.length} modules locked. Awaiting fusion command."` 
-                                        : files.length === 1 ? `"1 module detected. Minimum 2 required for fusion."`
-                                        : `"Scanner active. Awaiting PDF payloads."`}
-                                </p>
+                                )}
                             </div>
-                        </div>
 
-                        <div className="mt-auto flex flex-col gap-3 pt-6 border-t border-outline-variant/10">
-                            {!resultUrl ? (
-                                <button
-                                    onClick={handleMerge}
-                                    disabled={files.length < 2 || loading}
-                                    className={`w-full font-headline font-bold uppercase tracking-[0.2em] py-4 rounded-sm flex items-center justify-center gap-3 transition-all ${files.length < 2 || loading ? 'bg-surface-container-highest text-on-surface-variant/50 cursor-not-allowed' : 'bg-gradient-to-r from-primary to-primary-container text-on-primary active:scale-95 kinetic-glow hover:brightness-110'}`}
-                                >
-                                    {loading ? <Loader2 className="animate-spin text-primary" size={20} /> : <Layers size={20} />}
-                                    {loading ? 'Synthesizing...' : 'Merge Sequence'}
-                                </button>
-                            ) : (
-                                <div className="flex flex-col gap-3">
-                                    <button
-                                        onClick={handleDownload}
-                                        className="w-full bg-primary/20 border border-primary text-primary font-headline font-bold uppercase tracking-[0.2em] py-4 rounded-sm flex items-center justify-center gap-3 active:scale-95 transition-all kinetic-glow hover:bg-primary hover:text-on-primary"
-                                    >
-                                        <Download size={20} />
-                                        Extract PDF
-                                    </button>
-                                    <button
-                                        onClick={handleReset}
-                                        className="w-full border border-outline-variant/30 text-on-surface-variant font-headline font-bold uppercase tracking-[0.2em] py-3 rounded-sm flex items-center justify-center gap-2 hover:bg-surface-container-high transition-colors text-xs"
-                                    >
-                                        <RefreshCw size={14} /> Clear Cache
-                                    </button>
+                            <div className="w-full flex flex-col gap-3 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                                {files.map((file, idx) => (
+                                    <div key={idx} className="bg-[#fafafa] p-4 rounded-lg border border-[#f0f0f0] flex items-center justify-between group">
+                                        <div className="flex items-center gap-4">
+                                            <GripVertical className="text-[#d9d9d9] cursor-grab" size={20} />
+                                            <div className="bg-[#fff0f0] p-2 rounded-md">
+                                                <FileText className="text-[#f54c4c] w-6 h-6" />
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-text-tertiary text-sm truncate max-w-[200px] sm:max-w-[300px]">{file.name}</p>
+                                                <p className="text-xs text-text-secondary mt-0.5">
+                                                    {(file.size / 1024 / 1024).toFixed(2)} MB
+                                                </p>
+                                            </div>
+                                        </div>
+                                        {!resultUrl && (
+                                            <button 
+                                                onClick={(e) => { e.stopPropagation(); removeFile(idx); }} 
+                                                className="text-[#ff4d4f] opacity-50 hover:opacity-100 transition-opacity p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface-raised focus-visible:ring-offset-2 rounded"
+                                                aria-label="Remove file"
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {loading && (
+                                <div className="mt-4 mb-8 w-full">
+                                    <div className="flex justify-between items-center text-sm mb-2 text-text-secondary font-medium">
+                                        <span>Merging PDFs...</span>
+                                    </div>
+                                    <div className="relative h-2 w-full bg-[#f0f0f0] rounded-full overflow-hidden">
+                                        <div className="absolute top-0 left-0 h-full w-full bg-surface-raised animate-pulse"></div>
+                                    </div>
                                 </div>
                             )}
+
+                            {resultUrl && (
+                                <div className="mt-4 mb-8 p-4 w-full bg-[#f6ffed] border border-[#b7eb8f] rounded-lg flex items-center gap-3">
+                                    <CheckCircle className="text-[#52c41a]" size={24} />
+                                    <span className="text-md text-[#52c41a] font-medium">PDFs merged successfully.</span>
+                                </div>
+                            )}
+
+                            <div className="mt-auto flex flex-col sm:flex-row gap-4 justify-center w-full pt-6 border-t border-[#f0f0f0]">
+                                {!resultUrl ? (
+                                    <button
+                                        onClick={handleMerge}
+                                        disabled={files.length < 2 || loading}
+                                        className={`text-lg font-bold py-3 px-8 rounded-lg flex items-center justify-center gap-3 transition-all duration-fast min-h-[44px] min-w-[250px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface-raised focus-visible:ring-offset-2 ${files.length < 2 || loading ? 'bg-[#f5f5f5] text-[#b8b8b8] cursor-not-allowed' : 'bg-surface-raised text-text-inverse hover:brightness-110 shadow-[0_4px_14px_0_rgba(0,97,255,0.39)] hover:shadow-[0_6px_20px_rgba(0,97,255,0.23)] hover:scale-[1.02] active:scale-95'}`}
+                                    >
+                                        {loading ? <Loader2 className="animate-spin" size={20} /> : <Layers size={20} />}
+                                        {loading ? 'Merging...' : 'Merge PDFs'}
+                                    </button>
+                                ) : (
+                                    <>
+                                        <button
+                                            onClick={handleDownload}
+                                            className="bg-surface-raised text-text-inverse text-lg font-bold py-3 px-8 rounded-lg flex items-center justify-center gap-2 transition-all duration-fast shadow-[0_4px_14px_0_rgba(0,97,255,0.39)] hover:brightness-110 hover:shadow-[0_6px_20px_rgba(0,97,255,0.23)] hover:scale-[1.02] active:scale-95 min-h-[44px] min-w-[250px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface-raised focus-visible:ring-offset-2"
+                                        >
+                                            <Download size={20} />
+                                            Download Merged PDF
+                                        </button>
+                                        <button
+                                            onClick={handleReset}
+                                            className="bg-[#ffffff] border-2 border-[#e5e7eb] text-text-secondary hover:text-text-tertiary hover:border-surface-raised text-lg font-bold py-3 px-8 rounded-lg flex items-center justify-center gap-2 transition-all duration-fast min-h-[44px] min-w-[200px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface-raised focus-visible:ring-offset-2 active:scale-95"
+                                        >
+                                            Merge another
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>

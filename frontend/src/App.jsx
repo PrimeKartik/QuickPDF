@@ -6,79 +6,97 @@ function App() {
   const [activeTab, setActiveTab] = useState('wordToPdf');
 
   return (
-    <div className="min-h-screen bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
-      {/* Top Navigation Bar */}
-      <nav className="fixed top-0 w-full z-50 bg-[#1c2026]/60 backdrop-blur-xl border-b border-[#3c494e]/15 shadow-[0_4px_20px_rgba(0,209,255,0.08)] flex justify-between items-center px-6 py-3">
-        <div className="flex items-center gap-2 select-none group">
-          <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-md group-hover:scale-105 transition-transform duration-300 shrink-0">
+    <div className="min-h-screen bg-brand-gradient text-text-tertiary font-body flex flex-col">
+      {/* Top Navigation with Logo */}
+      <nav className="w-full flex items-center px-8 py-6">
+        <div className="flex items-center select-none cursor-pointer group">
+          <svg width="44" height="44" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 group-hover:scale-105 transition-transform duration-300">
             <defs>
-              <linearGradient id="logoRedGrad" x1="4" y1="12" x2="32" y2="40" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#f42a2a"/>
-                <stop offset="100%" stopColor="#9b0606"/>
+              <linearGradient id="docGradient" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#1a75ff" />
+                <stop offset="1" stopColor="#004bcc" />
               </linearGradient>
-              <linearGradient id="logoBoltGrad" x1="20" y1="4" x2="16" y2="44" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#ffeb3b"/>
-                <stop offset="100%" stopColor="#ff9800"/>
+              <linearGradient id="boltGradient" x1="26" y1="4" x2="16" y2="38" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#ffeb3b" />
+                <stop offset="1" stopColor="#ff9800" />
               </linearGradient>
               <filter id="boltShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="1" dy="2" stdDeviation="1.5" floodColor="#000000" floodOpacity="0.4"/>
+                <feDropShadow dx="1" dy="2" stdDeviation="1.5" floodColor="#000000" floodOpacity="0.3"/>
               </filter>
             </defs>
-            <rect x="4" y="12" width="28" height="28" rx="5" fill="url(#logoRedGrad)"/>
-            <text x="8.5" y="24" fill="white" fontFamily="Inter, sans-serif" fontWeight="900" fontSize="10.5" letterSpacing="0">PDF</text>
-            <path d="M 4 30 Q 14 26 22 32 T 32 26 L 32 35 C 32 37.76 29.76 40 27 40 L 9 40 C 6.24 40 4 37.76 4 35 Z" fill="#000000" opacity="0.15"/>
-            <path filter="url(#boltShadow)" d="M 37 2 L 15 24 L 23 24 L 7 46 L 27 18 L 19 18 Z" fill="url(#logoBoltGrad)"/>
+            {/* Document Base */}
+            <path d="M4 8C4 5.79086 5.79086 4 8 4H26L36 14V32C36 34.2091 34.2091 36 32 36H8C5.79086 36 4 34.2091 4 32V8Z" fill="url(#docGradient)"/>
+            {/* Fold */}
+            <path d="M26 4V10C26 12.2091 27.7909 14 30 14H36L26 4Z" fill="#003ab3" opacity="0.6"/>
+            {/* PDF Text */}
+            <text x="6" y="16" fill="white" fontFamily="sans-serif" fontWeight="900" fontSize="9" letterSpacing="-0.5">PDF</text>
+            {/* Lightning Bolt */}
+            <path filter="url(#boltShadow)" d="M26 3L11 22H21L15 39L33 18H23L26 3Z" fill="url(#boltGradient)" />
           </svg>
-          <span className="text-[28px] font-black tracking-tight font-headline flex items-center">
-            <span className="text-white">Quick</span>
-            <span className="text-[#e62020]">PDF</span>
+          <span className="text-[28px] font-bold tracking-tight ml-2 flex items-center">
+            <span className="text-text-tertiary">Quick</span>
+            <span className="text-[#0061ff]">PDF</span>
           </span>
-        </div>
-        
-        <div className="hidden md:flex items-center space-x-8 font-['Space_Grotesk'] tracking-wider uppercase text-sm">
-          <button 
-            onClick={() => setActiveTab('wordToPdf')}
-            className={`${activeTab === 'wordToPdf' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-colors'}`}
-          >
-            Word to PDF
-          </button>
-          <button 
-            onClick={() => setActiveTab('mergePdf')}
-            className={`${activeTab === 'mergePdf' ? 'text-primary border-b-2 border-primary pb-1' : 'text-on-surface-variant/70 hover:text-primary transition-colors'}`}
-          >
-            Merge PDFs
-          </button>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <button className="hidden md:block px-4 py-1.5 bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline font-bold text-xs uppercase tracking-widest rounded-sm hover:scale-[0.98] transition-all kinetic-glow relative overflow-hidden">
-            STATUS OPTIMIZED
-          </button>
         </div>
       </nav>
 
       {/* Main Content Area */}
-      <main className="pt-24 pb-20 px-6 flex flex-col items-center justify-center relative overflow-hidden min-h-screen">
-        {/* Background Decorative Elements */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
-          <div className="absolute top-1/4 left-10 w-96 h-96 bg-primary/5 rounded-full blur-[120px]"></div>
-          <div class="absolute bottom-1/4 right-10 w-64 h-64 bg-primary-container/5 rounded-full blur-[100px]"></div>
+      <main className="px-6 py-6 flex flex-col items-center flex-grow w-full max-w-6xl mx-auto">
+        
+        {/* Centered Tabs */}
+        <div className="flex justify-center items-center gap-8 mb-10 border-b border-gray-200/50 pb-4 w-full max-w-lg">
+          <button 
+            onClick={() => setActiveTab('wordToPdf')}
+            className={`text-xl font-bold transition-all duration-fast pb-2 relative ${activeTab === 'wordToPdf' ? 'text-surface-raised' : 'text-text-secondary hover:text-text-tertiary'}`}
+          >
+            Word to PDF
+            {activeTab === 'wordToPdf' && (
+              <span className="absolute bottom-[-17px] left-0 w-full h-[3px] bg-surface-raised rounded-t-md"></span>
+            )}
+          </button>
+          <button 
+            onClick={() => setActiveTab('mergePdf')}
+            className={`text-xl font-bold transition-all duration-fast pb-2 relative ${activeTab === 'mergePdf' ? 'text-surface-raised' : 'text-text-secondary hover:text-text-tertiary'}`}
+          >
+            Merge PDF
+            {activeTab === 'mergePdf' && (
+              <span className="absolute bottom-[-17px] left-0 w-full h-[3px] bg-surface-raised rounded-t-md"></span>
+            )}
+          </button>
         </div>
 
+        {/* Header Section */}
+        {activeTab === 'wordToPdf' ? (
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-bold text-text-tertiary mb-4 tracking-tight">Word to PDF – Convert DOC/DOCX to PDF</h1>
+            <p className="text-md text-text-secondary">
+              Convert Word documents to PDF online for free.
+            </p>
+            <p className="text-md text-text-secondary mt-1">
+              This Word to PDF converter lets you change DOCX to PDF format quickly and easily.
+            </p>
+          </div>
+        ) : (
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-bold text-text-tertiary mb-4 tracking-tight">Merge PDF – Combine PDF files online</h1>
+            <p className="text-md text-text-secondary">
+              Combine multiple PDFs into one document easily and securely.
+            </p>
+            <p className="text-md text-text-secondary mt-1">
+              Merge unlimited PDFs into a single file in just a few seconds.
+            </p>
+          </div>
+        )}
+
+        {/* Dynamic Tool Component */}
         {activeTab === 'wordToPdf' ? <WordToPdf /> : <MergePdf />}
+        
       </main>
 
       {/* Footer */}
-      <footer className="w-full border-t border-[#3c494e]/10 py-8 bg-[#0a0e14]">
-        <div className="flex flex-col md:flex-row justify-between items-center px-10 w-full gap-6 md:gap-0 max-w-7xl mx-auto">
-          <div className="flex items-center gap-8">
-            <span className="text-lg font-black text-[#7eecff]/40 font-headline uppercase tracking-tighter">QuickPDF</span>
-            <span className="font-['Inter'] text-[10px] uppercase tracking-widest text-[#dfe2eb]/50">© 2026 QuickPDF. STARK INDUSTRIES PROTOCOL.</span>
-          </div>
-          <div className="flex gap-8">
-            <a className="font-['Inter'] text-[10px] uppercase tracking-widest text-[#dfe2eb]/40 hover:text-[#7eecff] transition-colors" href="#">System Specs</a>
-            <a className="font-['Inter'] text-[10px] uppercase tracking-widest text-[#dfe2eb]/40 hover:text-[#7eecff] transition-colors" href="#">Security</a>
-          </div>
+      <footer className="w-full py-6 mt-auto">
+        <div className="max-w-7xl mx-auto flex flex-col items-center px-6">
+          <span className="text-sm text-text-secondary">© 2026 Convert Word to PDF Online for Free. All rights reserved.</span>
         </div>
       </footer>
     </div>
